@@ -1,0 +1,12 @@
+.App {
+  padding: 30px 30px;
+}
+
+.App-header > div {
+  margin: 20px 0;
+}
+
+.Fingerprint-data > button,
+.Visitor-ID {
+  margin-bottom: 20px;
+}
