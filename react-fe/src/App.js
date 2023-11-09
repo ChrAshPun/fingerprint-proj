@@ -19,7 +19,17 @@ function App() {
       .then(res => setExpressData(res))
       .catch(err => console.error(err));
     
-    FingerprintJS.load({ apiKey: process.env.REACT_APP_API_KEY })
+    FingerprintJS.load({
+      apiKey: process.env.REACT_APP_API_KEY,
+      endpoint: [
+        "https://metrics.christinapunla.dev", 
+        FingerprintJS.defaultEndpoint
+      ],
+      scriptUrlPattern: [
+        "https://metrics.christinapunla.dev/web/v<version>/<apiKey>/loader_v<loaderVersion>.js", 
+        FingerprintJS.defaultScriptUrlPattern
+      ],
+    })
       .then((fpPromise) => {
         console.log(fpPromise); // returned an obj with a get method
         return fpPromise.get();
