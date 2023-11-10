@@ -11,7 +11,15 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <FpjsProvider
     loadOptions={{
-      apiKey: process.env.REACT_APP_API_KEY
+      apiKey: process.env.REACT_APP_API_KEY,
+      endpoint: [
+        "https://metrics.christinapunla.dev", 
+        FingerprintJS.defaultEndpoint
+      ],
+      scriptUrlPattern: [
+        "https://metrics.christinapunla.dev/web/v<version>/<apiKey>/loader_v<loaderVersion>.js", 
+        FingerprintJS.defaultScriptUrlPattern
+      ],
     }}
   >
     <BrowserRouter basename="/fingerprint">
