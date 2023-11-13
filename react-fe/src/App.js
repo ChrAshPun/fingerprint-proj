@@ -1,7 +1,7 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react'
-import FingerprintJS from '@fingerprintjs/fingerprintjs-pro'
+// import FingerprintJS from '@fingerprintjs/fingerprintjs-pro'
 
 
 function App() {
@@ -12,33 +12,34 @@ function App() {
     {immediate: true}
   )
 
-  useEffect(() => {
+  // useEffect(() => {
     // testing the Express API
-    fetch('http://localhost:9000/testAPI')
-      .then(res => res.text())
-      .then(res => setExpressData(res))
-      .catch(err => console.error(err));
+    // fetch('http://localhost:9000/testAPI')
+    //   .then(res => res.text())
+    //   .then(res => setExpressData(res))
+    //   .catch(err => console.error(err));
     
-    FingerprintJS.load({
-      apiKey: process.env.REACT_APP_API_KEY,
-      endpoint: [
-        "https://metrics.christinapunla.dev", 
-        FingerprintJS.defaultEndpoint
-      ],
-      scriptUrlPattern: [
-        "https://metrics.christinapunla.dev/web/v<version>/<apiKey>/loader_v<loaderVersion>.js", 
-        FingerprintJS.defaultScriptUrlPattern
-      ],
-    })
-      .then((fpPromise) => {
-        console.log(fpPromise); // returned an obj with a get method
-        return fpPromise.get();
-      })
-      .then((getPromise) => {
-        console.log(getPromise);
-      })
-      .catch(err => console.error(err));
-  }, []);
+    // comment out this code block for now
+    // FingerprintJS.load({
+    //   apiKey: process.env.REACT_APP_API_KEY,
+    //   endpoint: [
+    //     "https://metrics.christinapunla.dev", 
+    //     FingerprintJS.defaultEndpoint
+    //   ],
+    //   scriptUrlPattern: [
+    //     "https://metrics.christinapunla.dev/web/v<version>/<apiKey>/loader_v<loaderVersion>.js", 
+    //     FingerprintJS.defaultScriptUrlPattern
+    //   ],
+    // })
+    //   .then((fpPromise) => {
+    //     console.log(fpPromise); // returned an obj with a get method
+    //     return fpPromise.get();
+    //   })
+    //   .then((getPromise) => {
+    //     console.log(getPromise);
+    //   })
+    //   .catch(err => console.error(err));
+  // }, []);
 
   return (
     <div className="App">
