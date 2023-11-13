@@ -6,6 +6,7 @@ import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
 import {
   FpjsProvider
 } from '@fingerprintjs/fingerprintjs-pro-react';
+import FingerprintJS from '@fingerprintjs/fingerprintjs-pro'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
