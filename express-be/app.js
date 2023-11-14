@@ -1,18 +1,11 @@
-var createError = require('http-errors');
-var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors'); // cors
-// require('dotenv').config(); don't need anymore, only on frontend
-
-// console.log(process.env) for testing dotenv
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var testAPIRouter = require("./routes/testAPI"); // test route
-
+var express = require('express');
 var app = express();
+const fs = require('fs');
+const port = process.env.PORT || 9001;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,29 +13,28 @@ app.set('view engine', 'jade');
 
 app.use(cors()); // cors
 app.use(logger('dev'));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/testAPI', testAPIRouter); // test route
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+app.post('/post', (req, res) => {
+  // res.send('POST request to the homepage') // then in React use .text()
+  const fileContent = fs.readFileSync('data.json');
+  const data = JSON.parse(fileContent);
+  data.requestId = req.body.data;
+  fs.writeFile("data.json", JSON.stringify(data), (err) => err && console.error(err));
+})
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.listen(port, () => {
+  console.log(`express-be listening on port ${port}`)
+})
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+// var testAPIRouter = require("./routes/testAPI"); // test route
+// app.use('/testAPI', testAPIRouter); // test route
 
 module.exports = app;

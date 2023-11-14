@@ -1,51 +1,68 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react'
-// import FingerprintJS from '@fingerprintjs/fingerprintjs-pro'
-
 
 function App() {
-  const [expressData, setExpressData] = useState([]);
-
   const {isLoading, error, data, getData} = useVisitorData(
     {extendedResult: true},
     {immediate: true}
   )
 
   // useEffect(() => {
-    // testing the Express API
-    // fetch('http://localhost:9000/testAPI')
-    //   .then(res => res.text())
-    //   .then(res => setExpressData(res))
-    //   .catch(err => console.error(err));
+  //   // testing the Express API
+  //   fetch('http://localhost:9001/testAPI')
+  //     .then(res => res.text())
+  //     .then(res => setExpressData(res))
+  //     .catch(err => console.error(err));
     
-    // comment out this code block for now
-    // FingerprintJS.load({
-    //   apiKey: process.env.REACT_APP_API_KEY,
-    //   endpoint: [
-    //     "https://metrics.christinapunla.dev", 
-    //     FingerprintJS.defaultEndpoint
-    //   ],
-    //   scriptUrlPattern: [
-    //     "https://metrics.christinapunla.dev/web/v<version>/<apiKey>/loader_v<loaderVersion>.js", 
-    //     FingerprintJS.defaultScriptUrlPattern
-    //   ],
-    // })
-    //   .then((fpPromise) => {
-    //     console.log(fpPromise); // returned an obj with a get method
-    //     return fpPromise.get();
-    //   })
-    //   .then((getPromise) => {
-    //     console.log(getPromise);
-    //   })
-    //   .catch(err => console.error(err));
+  //   // comment out this code block for now
+  //   // FingerprintJS.load({
+  //   //   apiKey: process.env.REACT_APP_API_KEY,
+  //   //   endpoint: [
+  //   //     "https://metrics.christinapunla.dev", 
+  //   //     FingerprintJS.defaultEndpoint
+  //   //   ],
+  //   //   scriptUrlPattern: [
+  //   //     "https://metrics.christinapunla.dev/web/v<version>/<apiKey>/loader_v<loaderVersion>.js", 
+  //   //     FingerprintJS.defaultScriptUrlPattern
+  //   //   ],
+  //   // })
+  //   //   .then((fpPromise) => {
+  //   //     console.log(fpPromise); // returned an obj with a get method
+  //   //     return fpPromise.get();
+  //   //   })
+  //   //   .then((getPromise) => {
+  //   //     console.log(getPromise);
+  //   //   })
+  //   //   .catch(err => console.error(err));
   // }, []);
+
+  useEffect(() => {
+    const handleSaveData = async () => {
+      try {
+        const response = await fetch('http://localhost:9001/post/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json'},
+          body: JSON.stringify({ data: data?.requestId }),
+        });
+  
+        if (response.ok) {
+          console.log('Data saved successfully');
+        } else {
+          console.error('Failed to save data');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    handleSaveData();
+  }, [data?.requestId])
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>Fingerprint Project</h1>
-        <p>From Express Server: { expressData }</p>
         <div>
           <h4>Frontend - React</h4>
           <h4>Backend - Express</h4>
