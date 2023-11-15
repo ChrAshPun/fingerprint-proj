@@ -1,8 +1,12 @@
 import './App.css';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react'
 
 function App() {
+  const [ dataa, setDataa] = useState(null)
+  const [ requestIdEvent, setRequestIdEvent] = useState(null)
+
+
   const {isLoading, error, data, getData} = useVisitorData(
     {extendedResult: true},
     {immediate: true}
@@ -38,26 +42,35 @@ function App() {
   // }, []);
 
   useEffect(() => {
-    const handleSaveData = async () => {
-      try {
-        const response = await fetch('http://localhost:9001/post/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json'},
-          body: JSON.stringify({ data: data?.requestId }),
-        });
-  
-        if (response.ok) {
+    const handleSaveData = () => {
+      fetch('http://localhost:9001/post/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: data?.requestId }),
+      })
+        .then(response => response.text())
+        .then(response => JSON.parse(response))
+        .then((data) => {
           console.log('Data saved successfully');
-        } else {
-          console.error('Failed to save data');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
+          console.log(data)
+          setRequestIdEvent(JSON.stringify(data, null, 2));
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     };
+    
 
     handleSaveData();
   }, [data?.requestId])
+
+  useEffect(() => {
+    if (error) {
+      setDataa(JSON.stringify(error))
+    } else {
+      setDataa(JSON.stringify(data, null, 2))
+    }
+  }, [data, error])
 
   return (
     <div className="App">
@@ -72,11 +85,20 @@ function App() {
         <button onClick={() => getData({ignoreCache: true})}>
           Reload data
         </button>
-        <div className="Visitor-ID">
-          <p>VisitorId: {isLoading ? 'Loading...' : data?.visitorId}</p>
-          <p>Full visitor data:</p>
+      </div>
+      <div className="Visitor-ID">
+        <p>VisitorId: {isLoading ? 'Loading...' : data?.visitorId}</p>
+        <p>Full visitor data:</p>
+      </div>
+      <div className="columns">
+        <div className="flex-item">
+          {/* <pre>{error ? error.message : JSON.stringify(data, null, 2)}</pre> */}
+          <pre>{ dataa }</pre>
         </div>
-        <pre>{error ? error.message : JSON.stringify(data, null, 2)}</pre>
+        <div className="flex-item">
+          {/* <p>{JSON.stringify(requestIdEvent, null, 2)}</p> */}
+          <pre>{ requestIdEvent }</pre>
+        </div>
       </div>
     </div>
   );
