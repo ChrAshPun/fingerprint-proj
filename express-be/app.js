@@ -19,9 +19,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/fingerprint/api/get', (req, res) => {
-  res.send('Hello World!')
-})
+app.use(function (req, res, next) {
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', false);
+
+  // Pass to next layer of middleware
+  next();
+});
 
 const {
   FingerprintJsServerApiClient,
@@ -35,8 +50,12 @@ const client = new FingerprintJsServerApiClient({
 
 // Get visit history of a specific visitor
 // client.getVisitorHistory('<visitorId>').then((visitorHistory) => {
-//   console.log(visitorHistory);
-// });
+  //   console.log(visitorHistory);
+  // });
+
+app.get('/fingerprint/api/get', (req, res) => {
+    res.send('Hello World!')
+  })
 
 app.post('/fingerprint/api/post', (req, res) => {
   // res.send('POST request to the homepage') // then in React use .text()

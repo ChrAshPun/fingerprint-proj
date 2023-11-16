@@ -14,6 +14,14 @@ function App() {
 
   useEffect(() => {
     const handleSaveData = () => {
+      fetch('https://christinapunla.dev/fingerprint/api/get/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: data?.requestId }),
+      })
+        .then(response => response.text())
+        .catch(error => console.error('Error:', error));
+
       fetch('https://christinapunla.dev/fingerprint/api/post/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
