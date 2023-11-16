@@ -38,7 +38,7 @@ const client = new FingerprintJsServerApiClient({
 //   console.log(visitorHistory);
 // });
 
-app.post('/post', (req, res) => {
+app.post('/fingerprint/api/post', (req, res) => {
   // res.send('POST request to the homepage') // then in React use .text()
   if (req.body.data) {
     console.log(req.body.data);

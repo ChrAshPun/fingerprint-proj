@@ -12,38 +12,9 @@ function App() {
     {immediate: true}
   )
 
-  // useEffect(() => {
-  //   // testing the Express API
-  //   fetch('http://localhost:9001/testAPI')
-  //     .then(res => res.text())
-  //     .then(res => setExpressData(res))
-  //     .catch(err => console.error(err));
-    
-  //   // comment out this code block for now
-  //   // FingerprintJS.load({
-  //   //   apiKey: process.env.REACT_APP_API_KEY,
-  //   //   endpoint: [
-  //   //     "https://metrics.christinapunla.dev", 
-  //   //     FingerprintJS.defaultEndpoint
-  //   //   ],
-  //   //   scriptUrlPattern: [
-  //   //     "https://metrics.christinapunla.dev/web/v<version>/<apiKey>/loader_v<loaderVersion>.js", 
-  //   //     FingerprintJS.defaultScriptUrlPattern
-  //   //   ],
-  //   // })
-  //   //   .then((fpPromise) => {
-  //   //     console.log(fpPromise); // returned an obj with a get method
-  //   //     return fpPromise.get();
-  //   //   })
-  //   //   .then((getPromise) => {
-  //   //     console.log(getPromise);
-  //   //   })
-  //   //   .catch(err => console.error(err));
-  // }, []);
-
   useEffect(() => {
     const handleSaveData = () => {
-      fetch('http://localhost:9001/post/', {
+      fetch('https://christinapunla.dev/fingerprint/api/post/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data: data?.requestId }),
@@ -60,7 +31,6 @@ function App() {
         });
     };
     
-
     handleSaveData();
   }, [data?.requestId])
 
