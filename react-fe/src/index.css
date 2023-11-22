@@ -13,9 +13,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+p {
+  font-size: 15px;
+}
+
 code {
+  font-size: 12.75px;
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+  color: #333333;
+  line-height: 1.2;
 }
 
 
