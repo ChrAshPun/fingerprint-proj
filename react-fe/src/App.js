@@ -15,6 +15,7 @@ function App() {
   )
 
   useEffect(() => {
+  if (data?.requestId) {
     const handleSaveData = () => {
       fetch('https://christinapunla.dev/fingerprint/api/post/', {
         method: 'POST',
@@ -30,6 +31,7 @@ function App() {
     };
     
     handleSaveData();
+  }
   }, [data?.requestId])
 
   useEffect(() => {
